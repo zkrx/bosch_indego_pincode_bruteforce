@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+
+# Refer to https://zkre.xyz/posts/indego_pin
+
 import sys
 
 from PyV4L2Camera.camera import Camera
@@ -85,6 +88,9 @@ def toggle_pin(pin):
     set_pin(pin, PIN_OFF);
     sleep(0.1)
 
+# XXX: "and_ocr" suffix is from the original code. This script doesn't do OCR
+# any longer but I was too lazy to rename the original variables. We now use image
+# hashes.
 def take_image_and_ocr(savename, do_ocr, ROI_, image2):
     camera_init()
     camera = Camera(videodev, 1280, 720)
@@ -100,13 +106,6 @@ def take_image_and_ocr(savename, do_ocr, ROI_, image2):
         hash = imagehash.average_hash(image)
         hash2 = imagehash.average_hash(image2)
         return hash - hash2
-#    if (do_ocr):
-#        tessconf = r'--dpi 600 --oem 0 --psm 7 --user-words userwords.txt -l fra'
-#        ret = pytesseract.image_to_string(image, lang='fra', config=tessconf).lower().translate(str.maketrans('', '', ' \n\t\r'))
-#        #ret = pytesseract.image_to_string(image, lang='fra', config=tessconf)
-#        del image
-#        print(ret)
-#        return ret
     del image
     return None
 
@@ -165,44 +164,6 @@ def camera_init():
     os.system("v4l2-ctl -d 2 -c saturation=0")
     os.system("v4l2-ctl -d 2 -c backlight_compensation=0")
 
-# FIXME delete husq stuff
-#def do_bruteforce_husq() :
-#    global camera
-#    global target
-#    #camera_init()
-#    pin_index = 0
-#    while pin_index < len(pinlist):
-#        set_dock_power_state(True)
-#        sleep(8) # delay between the dock and power
-#        pin_found = False
-#        if (target == Target.Bosch_Indego) :
-#            enter_number_bosch(pinlist[pin_index])
-#        elif (target == Target.Husqvarna) :
-#            enter_number_husqvarna(pinlist[pin_index])
-#        sleep(1)
-#
-#        ocr = take_image_and_ocr(pinlist[pin_index], False, ROI)
-#        '''if not 'akc' in ocr \
-#                and not 'ept' in ocr \
-#                and not 'nic' in ocr \
-#                and not 'iert' in ocr \
-#                and not 'akz' in ocr \
-#                and not 'kze' in ocr \
-#                and not 'icht' in ocr:
-#            pin_found = False
-#            try:
-#                input("Press enter to continue")
-#            except SyntaxError:
-#                pass
-#            break'''
-#        pin_index = pin_index + 1
-#
-#        if pin_found:
-#            print("Pin found?", pin_index, )
-#            break
-#        set_dock_power_state(False)
-#        sleep(1)
-
 def power_cycle():
     print("Power cycling...")
     set_pin(Button.PowerEn, POWER_OFF)
@@ -232,19 +193,6 @@ def do_bruteforce():
         if rebootCounter == 2:
             image_name = 'error.png'
 
-#        ocr = take_image_and_ocr(pinlist[pin_index], True, roi)
-#        print(f"ocr: {ocr}")
-#        while ocr == '':
-#            ocr = take_image_and_ocr(pinlist[pin_index], True, roi)
-#            print(f"ocr: {ocr}")
-#
-#        if 'lée' not in ocr and \
-#           'ouc' not in ocr and \
-#           'ver' not in ocr and \
-#           'Err' not in ocr and \
-#           'eur' not in ocr :
-#            print(f"### FOUND: {pinlist[pin_index]}")
-#            break
         hamming_distance = take_image_and_ocr(pinlist[pin_index], True, ROI, Image.open(image_name))
         print(f"hamming distance: {hamming_distance}")
 

@@ -233,7 +233,7 @@ if __name__ == '__main__':
                 print(" No arguments: start brute force")
                 print(" bruteforce [start_pin]: start brute force from the pin passed in the 2nd arg")
                 print(" take_image:  Take a test image and write it to test.png")
-                print(" take_image_ocr:  Take a test image and write it to test.png and OCR it")
+                print(" take_image_ocr:  Take a test image and write it to test.png and hash it")
     except Exception as e:
         set_pin(Button.PowerEn, POWER_OFF)
         raise e

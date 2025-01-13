@@ -10,7 +10,7 @@ You will need to capture the necessary pictures of various screens manually befo
 use the ones provided in this repo because your camera setup is different and the language
 of your mower is likely different as well:
 
-- sw/locked.png: this is a picture of the basic lock screen.
+- sw/locked.png: after a failed pin attempt, this screen is shown.
 - sw/error.png: after 3 wrong attempts, the mower locks itself and must be restarted. An error
 message is shown. This is a picture of that screen.
 

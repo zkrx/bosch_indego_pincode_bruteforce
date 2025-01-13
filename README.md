@@ -1,7 +1,7 @@
 # Bosch Indego PIN recovery
 
 Read my blog post for a description:
-https://zkrx.xyz/posts/indego_pin
+https://zkre.xyz/posts/indego_pin
 
 This script might use outdated dependencies, use a python virtual env to pull in the required libs.
 This is a bit rough and you will probably need to adapt it.
